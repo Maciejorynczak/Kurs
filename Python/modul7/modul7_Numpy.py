@@ -1,39 +1,13 @@
-import numpy as np
-import numpy_financial as npf
-import matplotlib.pyplot as plt
+import pandas as pd
 
-# zalozenia
+#5 dane z wikipedii:
+population_data = pd.read_html('https://simple.wikipedia.org/wiki/List_of_U.S._states_by_population') [0]
 
-current_price = 1200000
-growth_rate = 0.05
-years = 5
-yearly_rate = 0.12
-monthly_rate = yearly_rate / 12
-nper = years * 12
+print("Podgląd danych o populacji:")
+print(population_data.head())
 
-future_price = current_price * (1 + growth_rate) ** years 
-# Cena za 5lat to 153 153.79PLN
+state_abbreviations_df = pd.read_html('https://en.wikipedia.org/wiki/List_of_states_and_territories_of_the_United_States')[0]
 
+print("\nPodgląd danych o skrótach stanów:")
+print(state_abbreviations_df.head())
 
-monthly_payment = npf.pmt(monthly_rate, nper, 0, -future_price) # wplata miesieczna
-# miesieczna wplata 1 875.28PLN
-
-
-
-
-
-
-months = np.arange(1, nper + 1)
-price_over_time = current_price * (1 + growth_rate / 12) ** months
-savings_over_time = npf.fv(monthly_rate, months, -monthly_payment, 0)
-
-
-
-
-plt.plot(months, price_over_time, label='Cena mieszkania')
-plt.plot(months, savings_over_time, label='Wartość lokaty')
-plt.legend()
-plt.xlabel('Miesiące')
-plt.ylabel('Złote')
-plt.title('Zmiana ceny mieszkania i wartości lokaty w czasie')
-plt.show()
